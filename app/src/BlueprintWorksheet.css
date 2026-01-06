@@ -1,0 +1,290 @@
+.blueprint-worksheet-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+}
+
+.worksheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e0e0e0;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.worksheet-header h1 {
+  margin: 0;
+  font-size: 28px;
+  color: #333;
+  font-weight: 700;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  position: relative;
+  z-index: 1;
+  user-select: none;
+}
+
+.btn-primary {
+  background: #4a90e2;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #357abd;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn-secondary {
+  background: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.btn-secondary:hover {
+  background: #e8e8e8;
+}
+
+/* 워크시트 레이아웃 - 좌우 배치 */
+.worksheet-content {
+  background: white;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.worksheet-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+@media (min-width: 1200px) {
+  .worksheet-layout {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* 섹션 스타일 */
+.worksheet-section {
+  padding: 25px;
+  border: 2px solid #e8e8e8;
+  border-radius: 10px;
+  background: #fafafa;
+  min-height: 600px;
+}
+
+.asis-section {
+  border-left: 4px solid #4a90e2;
+}
+
+.tobe-section {
+  border-left: 4px solid #50c878;
+}
+
+.section-header {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.section-header h2 {
+  margin: 0 0 5px 0;
+  font-size: 24px;
+  color: #333;
+  font-weight: 700;
+}
+
+.section-subtitle {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+/* 폼 그룹 */
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+  font-size: 15px;
+}
+
+.worksheet-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  line-height: 1.6;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.worksheet-textarea:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.worksheet-textarea::placeholder {
+  color: #999;
+}
+
+/* 요약 카드 섹션 */
+.summary-section {
+  margin-top: 40px;
+  padding: 25px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  border: 2px solid #e0e0e0;
+}
+
+.summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.summary-header h2 {
+  margin: 0;
+  font-size: 22px;
+  color: #333;
+  font-weight: 700;
+}
+
+.summary-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.summary-card {
+  background: white;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 25px;
+  margin-top: 20px;
+}
+
+.summary-content {
+  margin: 0;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.8;
+  color: #333;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #333;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  opacity: 0;
+  transition: all 0.3s;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* 인쇄용 스타일 */
+@media print {
+  .worksheet-header,
+  .header-actions,
+  .summary-actions,
+  .toast {
+    display: none;
+  }
+  
+  .worksheet-content {
+    box-shadow: none;
+    border: none;
+    padding: 0;
+  }
+  
+  .worksheet-section {
+    page-break-inside: avoid;
+    border: 1px solid #ddd;
+  }
+  
+  .summary-section {
+    page-break-before: always;
+  }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .blueprint-worksheet-container {
+    padding: 15px;
+  }
+  
+  .worksheet-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .worksheet-content {
+    padding: 20px;
+  }
+  
+  .worksheet-section {
+    padding: 20px;
+    min-height: auto;
+  }
+  
+  .summary-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+

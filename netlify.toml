@@ -1,0 +1,17 @@
+[build]
+  # 빌드 명령어
+  command = "npm run build"
+  # 빌드 결과물 디렉토리 (Vite 기본값: dist)
+  publish = "dist"
+
+# SPA 라우팅을 위한 리다이렉트 설정
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# 환경 변수 설정 (필요시)
+# [build.environment]
+#   NODE_VERSION = "18"
+
+

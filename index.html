@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 디지털 기반 수업 업그레이드 웹앱</title>
+    <link rel="stylesheet" href="./app/style.css">
+</head>
+<body>
+    <!-- 왼쪽 사이드 네비게이션 -->
+    <nav class="side-nav">
+        <div class="side-title">🎓 수업 업그레이드</div>
+        <ul class="side-menu">
+            <li>
+                <button class="side-btn active" data-page="survey">
+                    <span class="step">1</span>
+                    <span class="label">망한 수업 자랑하기</span>
+                </button>
+            </li>
+            <li>
+                <button class="side-btn" data-page="picrat">
+                    <span class="step">2</span>
+                    <span class="label">PICRAT 진단</span>
+                </button>
+            </li>
+            <li>
+                <button class="side-btn" data-page="blueprint">
+                    <span class="step">3</span>
+                    <span class="label">As Is → To Be 청사진</span>
+                </button>
+            </li>
+            <li>
+                <button class="side-btn" data-page="share">
+                    <span class="step">4</span>
+                    <span class="label">결과 공유</span>
+                </button>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- 메인 컨텐츠 영역 -->
+    <main class="main-content" style="margin-left: 240px;">
+        <!-- 플로우 1: 망한 수업 자랑하기 상 -->
+        <section id="survey-page" class="page active">
+            <div class="container">
+                <div class="header">
+                    <h1>🏆 나의 망한 수업 유형 테스트</h1>
+                    <p>AI·디지털 수업에서 나는 어떤 실수를 했을까?</p>
+                </div>
+
+                <!-- 시작 화면 -->
+                <div class="start-screen" id="startScreen">
+                    <div class="start-icon">🎯</div>
+                    <h2>실패에서 배우는 교사되기!</h2>
+                    <p>
+                        8개의 질문에 답하면<br>
+                        나의 AI·디지털 수업 실패 유형을 알려드려요.<br><br>
+                        실패를 인정하는 것이 성장의 첫 걸음입니다! 💪
+                    </p>
+                    <button class="start-btn" onclick="startTest()">테스트 시작하기 →</button>
+                </div>
+
+                <!-- 진행률 -->
+                <div class="progress-text" id="progressText" style="display:none;">
+                    <span id="currentQ">1</span> / <span id="totalQ">8</span> 질문
+                </div>
+                <div class="progress-bar" id="progressBar" style="display:none;">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <!-- 질문 카드들 -->
+                <div id="survey-questions"></div>
+
+                <!-- 결과 화면 -->
+                <div class="result-screen" id="resultScreen">
+                    <div class="result-badge" id="resultBadge">🏆</div>
+                    <div class="result-title" id="resultTitle"></div>
+                    <div class="result-subtitle" id="resultSubtitle"></div>
+                    <div class="result-description" id="resultDesc"></div>
+                    <div class="result-tip" id="resultTip"></div>
+                    <button class="restart-btn" onclick="surveyModule.restart()">다시 테스트하기 🔄</button>
+                    <p class="share-text">실패를 나누면 반이 되고, 배움은 두 배가 됩니다! 😊</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 플로우 2: PICRAT 진단 -->
+        <section id="picrat-page" class="page">
+            <div class="container">
+                <div class="header">
+                    <h1>🧠 PICRAT 진단</h1>
+                    <p>나의 수업은 PICRAT 모델에서 어디에 해당할까?</p>
+                </div>
+                <div id="picrat-content"></div>
+            </div>
+        </section>
+
+        <!-- 플로우 3: As Is → To Be 청사진 -->
+        <section id="blueprint-page" class="page">
+            <div class="container">
+                <div class="header">
+                    <h1>🧩 As Is → To Be 청사진 설계</h1>
+                    <p>현재 수업을 분석하고 개선된 수업을 설계해보세요</p>
+                </div>
+                <div id="blueprint-content"></div>
+            </div>
+        </section>
+
+        <!-- 플로우 4: 결과 공유 -->
+        <section id="share-page" class="page">
+            <div class="container">
+                <div class="header">
+                    <h1>📤 결과 공유</h1>
+                    <p>나의 수업 분석 결과를 공유해보세요</p>
+                </div>
+                <div id="share-content"></div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="./app/main.js"></script>
+</body>
+</html>
