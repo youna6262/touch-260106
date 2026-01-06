@@ -69,3 +69,4 @@ document.addEventListener('DOMContentLoaded', () => {
 window.appState = appState;
 window.switchPage = switchPage;
 
+

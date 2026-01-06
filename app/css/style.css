@@ -93,9 +93,10 @@ body {
 }
 
 .header h1 {
-    font-size: 2.2rem;
+    font-size: 20px; /* 18~20px 가이드 적용 */
     margin-bottom: 10px;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    font-weight: 700;
 }
 
 .header p {
@@ -301,7 +302,7 @@ body {
 .result-description p {
     color: #6b7280;
     line-height: 1.7;
-    font-size: 1rem;
+    font-size: 15px; /* 15~16px 가이드 적용 */
 }
 
 .result-description ul {
@@ -332,16 +333,35 @@ body {
     line-height: 1.6;
 }
 
-.restart-btn {
-    background: #667eea;
-    color: white;
-    border: none;
-    padding: 14px 35px;
-    font-size: 1rem;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 10px;
+/* 상태 표현 색상 */
+.status-complete {
+    color: #10b981; /* 완료: 초록 */
+    background-color: #ecfdf5;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.status-in-progress {
+    color: #3b82f6; /* 진행 중: 파랑 */
+    background-color: #eff6ff;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.status-incomplete {
+    color: #6b7280; /* 미완료: 회색 */
+    background-color: #f3f4f6;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-block;
 }
 
 .restart-btn:hover {
@@ -367,9 +387,27 @@ body {
     box-shadow: 0 10px 40px rgba(0,0,0,0.2);
 }
 
+/* 카드 내부 텍스트: 15~16px 가이드 적용 */
+.intro-card p,
+.picrat-axis li,
+.picrat-question-card,
+.blueprint-section,
+.form-group label,
+.form-input {
+    font-size: 15px; /* 15~16px 가이드 적용 */
+    line-height: 1.6;
+}
+
+.picrat-option-btn,
+.option-text {
+    font-size: 15px; /* 15~16px 가이드 적용 */
+}
+
 .intro-card h2 {
     color: #1f2937;
     margin-bottom: 15px;
+    font-size: 19px; /* 18~20px 가이드 적용 */
+    font-weight: 700;
 }
 
 .picrat-grid {
@@ -476,7 +514,8 @@ body {
 .result-card h2 {
     color: #1f2937;
     margin-bottom: 20px;
-    font-size: 1.8rem;
+    font-size: 19px; /* 18~20px 가이드 적용 */
+    font-weight: 700;
 }
 
 .result-description {
@@ -504,6 +543,7 @@ body {
 .result-improvement p {
     color: #047857;
     line-height: 1.6;
+    font-size: 15px; /* 15~16px 가이드 적용 */
 }
 
 /* 청사진 스타일 */
@@ -537,7 +577,8 @@ body {
 .section-header h2 {
     color: #1f2937;
     margin-bottom: 8px;
-    font-size: 1.5rem;
+    font-size: 19px; /* 18~20px 가이드 적용 */
+    font-weight: 700;
 }
 
 .section-header p {
@@ -602,14 +643,21 @@ body {
     margin-top: 30px;
 }
 
-.save-btn, .export-btn, .clear-btn {
-    padding: 12px 25px;
+/* 박스형 CTA 버튼 스타일 (문장형 링크 제거) */
+.save-btn, .export-btn, .clear-btn,
+.restart-btn, .share-btn, .nav-to-btn,
+.start-btn {
+    padding: 12px 24px;
     border: none;
-    border-radius: 25px;
-    font-size: 1rem;
+    border-radius: 8px; /* 박스형 CTA */
+    font-size: 15px; /* 15~16px 가이드 적용 */
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    display: inline-block;
+    text-decoration: none; /* 링크 스타일 제거 */
+    min-width: 120px; /* 박스형 CTA 최소 너비 */
+    text-align: center;
 }
 
 .save-btn {
@@ -651,7 +699,8 @@ body {
 .share-card h2 {
     color: #1f2937;
     margin-bottom: 20px;
-    font-size: 1.5rem;
+    font-size: 19px; /* 18~20px 가이드 적용 */
+    font-weight: 700;
 }
 
 .result-preview {
@@ -693,6 +742,7 @@ body {
 .preview-description {
     color: #6b7280;
     line-height: 1.6;
+    font-size: 15px; /* 15~16px 가이드 적용 */
 }
 
 .share-btn {
@@ -783,4 +833,62 @@ body {
         font-size: 1.2rem;
     }
 }
+
+/* 분석 도구 느낌의 시각화 스타일 */
+.analysis-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-left: 4px solid #667eea;
+    margin-bottom: 16px;
+    transition: all 0.2s ease;
+}
+
+.analysis-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
+}
+
+.analysis-card h3 {
+    font-size: 19px; /* 18~20px 가이드 */
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 12px;
+}
+
+.analysis-card p,
+.analysis-card .content {
+    font-size: 15px; /* 15~16px 가이드 */
+    color: #374151;
+    line-height: 1.6;
+}
+
+/* 시각화 요소 */
+.visualization-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 4px 0;
+}
+
+.visualization-badge.complete {
+    background-color: #ecfdf5;
+    color: #10b981;
+}
+
+.visualization-badge.in-progress {
+    background-color: #eff6ff;
+    color: #3b82f6;
+}
+
+.visualization-badge.incomplete {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
 

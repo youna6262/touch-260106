@@ -1,20 +1,26 @@
 // PICRAT 진단 모듈
 export const picratModule = {
     selectedAnswers: [],
+    currentStep: {
+        pic: null,  // P, I, C 중 하나
+        rat: null   // R, A, T 중 하나
+    },
     
     questions: [
         {
             id: 1,
-            text: '학생들이 기술을 어떻게 사용하나요?',
+            text: '학생들은 주로 도구를 관찰용/대체용으로만 사용하고 있나요?',
+            category: 'pic',
             options: [
-                { text: '교사가 사용하는 것을 지켜본다 (Passive)', value: 'P' },
-                { text: '교사의 지시에 따라 사용한다 (Interactive)', value: 'I' },
-                { text: '학생이 주도적으로 사용한다 (Creative)', value: 'C' }
+                { text: '예 - 교사가 사용하는 것을 지켜본다', value: 'P' },
+                { text: '아니오 - 교사의 지시에 따라 사용한다', value: 'I' },
+                { text: '아니오 - 학생이 주도적으로 사용한다', value: 'C' }
             ]
         },
         {
             id: 2,
             text: '기술이 수업에 어떤 영향을 미치나요?',
+            category: 'rat',
             options: [
                 { text: '기존 수업을 대체한다 (Replacement)', value: 'R' },
                 { text: '기존 수업을 개선한다 (Amplification)', value: 'A' },
@@ -82,6 +88,7 @@ export const picratModule = {
     
     init() {
         this.selectedAnswers = [null, null];
+        this.currentStep = { pic: null, rat: null };
         this.render();
     },
     
@@ -89,36 +96,109 @@ export const picratModule = {
         const container = document.getElementById('picrat-content');
         
         container.innerHTML = `
-            <div class="picrat-intro">
-                <div class="intro-card">
-                    <h2>📊 PICRAT 모델이란?</h2>
-                    <p>PICRAT는 기술 통합 수업을 평가하는 모델입니다.</p>
-                    <div class="picrat-grid">
-                        <div class="picrat-axis">
-                            <h3>학생 참여도 (P-I-C)</h3>
-                            <ul>
-                                <li><strong>P (Passive)</strong>: 수동적 - 관찰만 함</li>
-                                <li><strong>I (Interactive)</strong>: 상호작용 - 교사 지시에 따라 사용</li>
-                                <li><strong>C (Creative)</strong>: 창의적 - 학생이 주도적으로 사용</li>
-                            </ul>
+            <!-- 상단 진행 바 (sticky) -->
+            <div class="picrat-progress-bar" id="picrat-progress-bar">
+                <div class="progress-steps">
+                    <div class="progress-step" data-step="P" id="step-P">
+                        <div class="step-circle">○</div>
+                        <div class="step-label">Passive</div>
+                    </div>
+                    <div class="progress-connector"></div>
+                    <div class="progress-step" data-step="I" id="step-I">
+                        <div class="step-circle">○</div>
+                        <div class="step-label">Interactive</div>
+                    </div>
+                    <div class="progress-connector"></div>
+                    <div class="progress-step" data-step="C" id="step-C">
+                        <div class="step-circle">○</div>
+                        <div class="step-label">Creative</div>
+                    </div>
+                </div>
+                <div class="progress-indicator" id="progress-indicator">
+                    <span>진단 진행 중...</span>
+                </div>
+            </div>
+
+            <!-- 메인 컨텐츠 영역 -->
+            <div class="picrat-main-layout">
+                <!-- 좌측: 질문 카드 영역 -->
+                <div class="picrat-questions-container">
+                    <div class="picrat-questions" id="picrat-questions"></div>
+                    <div class="picrat-result" id="picrat-result" style="display:none;"></div>
+                </div>
+
+                <!-- 우측: PICRAT 매트릭스 패널 (고정) -->
+                <div class="picrat-matrix-panel">
+                    <div class="matrix-header">
+                        <h3>PICRAT 매트릭스</h3>
+                        <p class="matrix-subtitle">현재 수업 위치</p>
+                    </div>
+                    <div class="matrix-axis-labels">
+                        <div class="axis-label-top">Creative</div>
+                        <div class="axis-label-left">Replace</div>
+                        <div class="axis-label-center">Amplify</div>
+                        <div class="axis-label-right">Transform</div>
+                        <div class="axis-label-bottom">Passive</div>
+                    </div>
+                    <div class="picrat-matrix" id="picrat-matrix">
+                        <!-- 첫 번째 열: Replacement -->
+                        <div class="matrix-col">
+                            <div class="matrix-cell" data-code="CR">
+                                <div class="cell-code">CR</div>
+                                <div class="cell-label">Creative<br>Replacement</div>
+                            </div>
+                            <div class="matrix-cell" data-code="IR">
+                                <div class="cell-code">IR</div>
+                                <div class="cell-label">Interactive<br>Replacement</div>
+                            </div>
+                            <div class="matrix-cell" data-code="PR">
+                                <div class="cell-code">PR</div>
+                                <div class="cell-label">Passive<br>Replacement</div>
+                            </div>
                         </div>
-                        <div class="picrat-axis">
-                            <h3>기술 영향도 (R-A-T)</h3>
-                            <ul>
-                                <li><strong>R (Replacement)</strong>: 대체 - 기존 수업을 대체</li>
-                                <li><strong>A (Amplification)</strong>: 증대 - 기존 수업을 개선</li>
-                                <li><strong>T (Transformation)</strong>: 변형 - 수업을 근본적으로 변형</li>
-                            </ul>
+                        <!-- 두 번째 열: Amplification -->
+                        <div class="matrix-col">
+                            <div class="matrix-cell" data-code="CA">
+                                <div class="cell-code">CA</div>
+                                <div class="cell-label">Creative<br>Amplification</div>
+                            </div>
+                            <div class="matrix-cell" data-code="IA">
+                                <div class="cell-code">IA</div>
+                                <div class="cell-label">Interactive<br>Amplification</div>
+                            </div>
+                            <div class="matrix-cell" data-code="PA">
+                                <div class="cell-code">PA</div>
+                                <div class="cell-label">Passive<br>Amplification</div>
+                            </div>
+                        </div>
+                        <!-- 세 번째 열: Transformation -->
+                        <div class="matrix-col">
+                            <div class="matrix-cell" data-code="CT">
+                                <div class="cell-code">CT</div>
+                                <div class="cell-label">Creative<br>Transformation</div>
+                            </div>
+                            <div class="matrix-cell" data-code="IT">
+                                <div class="cell-code">IT</div>
+                                <div class="cell-label">Interactive<br>Transformation</div>
+                            </div>
+                            <div class="matrix-cell" data-code="PT">
+                                <div class="cell-code">PT</div>
+                                <div class="cell-label">Passive<br>Transformation</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="matrix-legend">
+                        <div class="legend-item">
+                            <div class="legend-color current"></div>
+                            <span>현재 위치</span>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="picrat-questions" id="picrat-questions"></div>
-            <div class="picrat-result" id="picrat-result" style="display:none;"></div>
         `;
         
         this.renderQuestions();
+        this.updateProgressBar();
     },
     
     renderQuestions() {
@@ -129,13 +209,21 @@ export const picratModule = {
             const questionCard = document.createElement('div');
             questionCard.className = 'picrat-question-card';
             questionCard.id = `picrat-q${q.id}`;
+            if (index === 0) {
+                questionCard.classList.add('active');
+            }
             
-            const optionsHtml = q.options.map(opt => 
-                `<button class="picrat-option-btn" data-value="${opt.value}" onclick="picratModule.selectAnswer(${q.id}, '${opt.value}', event)">
-                    <span class="option-code">${opt.value}</span>
-                    <span class="option-text">${opt.text}</span>
-                </button>`
-            ).join('');
+            const optionsHtml = q.options.map(opt => {
+                const isSelected = this.currentStep[q.category] === opt.value;
+                return `
+                    <button class="picrat-option-btn ${isSelected ? 'selected' : ''}" 
+                            data-value="${opt.value}" 
+                            onclick="picratModule.selectAnswer(${q.id}, '${opt.value}', '${q.category}', event)">
+                        <span class="option-radio">${isSelected ? '●' : '○'}</span>
+                        <span class="option-text">${opt.text}</span>
+                    </button>
+                `;
+            }).join('');
             
             questionCard.innerHTML = `
                 <div class="question-header">
@@ -149,11 +237,12 @@ export const picratModule = {
         });
     },
     
-    selectAnswer(qId, value, event) {
+    selectAnswer(qId, value, category, event) {
         // 기존 선택 제거
         const questionCard = document.getElementById(`picrat-q${qId}`);
         questionCard.querySelectorAll('.picrat-option-btn').forEach(btn => {
             btn.classList.remove('selected');
+            btn.querySelector('.option-radio').textContent = '○';
         });
         
         // 새 선택 표시
@@ -166,19 +255,106 @@ export const picratModule = {
         }
         if (clickedBtn) {
             clickedBtn.classList.add('selected');
+            clickedBtn.querySelector('.option-radio').textContent = '●';
         }
         
         // 답변 저장
+        this.currentStep[category] = value;
         this.selectedAnswers[qId - 1] = value;
         
+        // 카드 강조 효과
+        questionCard.classList.add('answered');
+        
+        // 진행 바 업데이트
+        this.updateProgressBar();
+        
+        // 매트릭스 업데이트
+        this.updateMatrix();
+        
+        // 다음 카드로 스크롤
+        setTimeout(() => {
+            const nextCard = document.getElementById(`picrat-q${qId + 1}`);
+            if (nextCard) {
+                nextCard.classList.add('active');
+                nextCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }, 300);
+        
         // 두 질문 모두 답했으면 결과 표시
-        if (this.selectedAnswers.length === 2 && this.selectedAnswers[0] && this.selectedAnswers[1]) {
-            this.showResult();
+        if (this.currentStep.pic && this.currentStep.rat) {
+            setTimeout(() => {
+                this.showResult();
+            }, 500);
+        }
+    },
+    
+    updateProgressBar() {
+        const steps = ['P', 'I', 'C'];
+        const currentPic = this.currentStep.pic;
+        
+        steps.forEach((step, index) => {
+            const stepElement = document.getElementById(`step-${step}`);
+            const circle = stepElement.querySelector('.step-circle');
+            
+            if (currentPic) {
+                const stepIndex = steps.indexOf(currentPic);
+                if (index < stepIndex) {
+                    // 완료된 단계
+                    circle.textContent = '●';
+                    circle.classList.add('completed');
+                    stepElement.classList.remove('current');
+                } else if (index === stepIndex) {
+                    // 현재 단계
+                    circle.textContent = '●';
+                    circle.classList.add('current');
+                    stepElement.classList.add('current');
+                } else {
+                    // 미진행 단계
+                    circle.textContent = '○';
+                    circle.classList.remove('completed', 'current');
+                    stepElement.classList.remove('current');
+                }
+            } else {
+                // 아직 선택 안됨
+                if (index === 0) {
+                    circle.textContent = '○';
+                    stepElement.classList.add('current');
+                } else {
+                    circle.textContent = '○';
+                    stepElement.classList.remove('current');
+                }
+                circle.classList.remove('completed', 'current');
+            }
+        });
+        
+        // 진행 인디케이터 업데이트
+        const indicator = document.getElementById('progress-indicator');
+        if (currentPic) {
+            const stepNames = { 'P': 'Passive', 'I': 'Interactive', 'C': 'Creative' };
+            indicator.innerHTML = `<span>현재: <strong>${stepNames[currentPic]}</strong></span>`;
+        } else {
+            indicator.innerHTML = '<span>진단 진행 중...</span>';
+        }
+    },
+    
+    updateMatrix() {
+        // 모든 셀에서 하이라이트 제거
+        document.querySelectorAll('.matrix-cell').forEach(cell => {
+            cell.classList.remove('current-position');
+        });
+        
+        // 현재 위치 하이라이트
+        if (this.currentStep.pic && this.currentStep.rat) {
+            const code = this.currentStep.pic + this.currentStep.rat;
+            const cell = document.querySelector(`[data-code="${code}"]`);
+            if (cell) {
+                cell.classList.add('current-position');
+            }
         }
     },
     
     showResult() {
-        const code = this.selectedAnswers.join('');
+        const code = this.currentStep.pic + this.currentStep.rat;
         const result = this.results[code];
         
         if (!result) return;
@@ -210,10 +386,18 @@ export const picratModule = {
     
     restart() {
         this.selectedAnswers = [null, null];
+        this.currentStep = { pic: null, rat: null };
         document.getElementById('picrat-result').style.display = 'none';
         document.querySelectorAll('.picrat-option-btn').forEach(btn => {
             btn.classList.remove('selected');
+            btn.querySelector('.option-radio').textContent = '○';
         });
+        document.querySelectorAll('.picrat-question-card').forEach(card => {
+            card.classList.remove('answered', 'active');
+        });
+        document.getElementById('picrat-q1').classList.add('active');
+        this.updateProgressBar();
+        this.updateMatrix();
     }
 };
 
