@@ -26,10 +26,13 @@ function switchPage(pageId) {
     }
     
     // 메뉴 활성화 상태 업데이트
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.classList.remove('active');
+    document.querySelectorAll('.side-btn').forEach(btn => {
+        btn.classList.remove('active');
     });
-    document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
+    const targetBtn = document.querySelector(`[data-page="${pageId}"]`);
+    if (targetBtn) {
+        targetBtn.classList.add('active');
+    }
     
     appState.currentPage = pageId;
     
@@ -52,12 +55,14 @@ function switchPage(pageId) {
 
 // 메뉴 클릭 이벤트
 document.addEventListener('DOMContentLoaded', () => {
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
+    const navButtons = document.querySelectorAll('.side-btn');
+    navButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
             e.preventDefault();
-            const pageId = link.getAttribute('data-page');
-            switchPage(pageId);
+            const pageId = btn.getAttribute('data-page');
+            if (pageId) {
+                switchPage(pageId);
+            }
         });
     });
     

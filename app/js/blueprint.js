@@ -18,123 +18,226 @@ export const blueprintModule = {
     init() {
         this.loadSavedData();
         this.render();
+        this.updateProgress();
+    },
+    
+    updateProgress() {
+        // As Is 진행률 계산
+        const asIsFields = Object.values(this.blueprintData.asIs);
+        const asIsCompleted = asIsFields.filter(v => v.trim() !== '').length;
+        const asIsProgress = Math.round((asIsCompleted / asIsFields.length) * 100);
+        
+        // To Be 진행률 계산
+        const toBeFields = Object.values(this.blueprintData.toBe);
+        const toBeCompleted = toBeFields.filter(v => v.trim() !== '').length;
+        const toBeProgress = Math.round((toBeCompleted / toBeFields.length) * 100);
+        
+        // 메뉴에 진행 상태 표시
+        const menuBtn = document.querySelector('[data-page="blueprint"]');
+        if (menuBtn) {
+            const progressText = menuBtn.querySelector('.progress-indicator');
+            if (progressText) {
+                progressText.textContent = `[As Is ${asIsProgress}%] [To Be ${toBeProgress}%]`;
+            } else {
+                const progressEl = document.createElement('span');
+                progressEl.className = 'progress-indicator';
+                progressEl.textContent = `[As Is ${asIsProgress}%] [To Be ${toBeProgress}%]`;
+                menuBtn.appendChild(progressEl);
+            }
+        }
     },
     
     render() {
         const container = document.getElementById('blueprint-content');
         
         container.innerHTML = `
-            <div class="blueprint-intro">
-                <p>현재 수업(As Is)을 분석하고, 개선된 수업(To Be)을 설계해보세요.</p>
+            <!-- 히어로 영역 -->
+            <div class="blueprint-hero">
+                <div class="hero-icon">🧩</div>
+                <h1 class="hero-title">As Is → To Be 수업 청사진 설계</h1>
+                <p class="hero-description">현재 수업을 돌아보고, 더 나은 수업으로 바꾸는 설계 단계입니다</p>
             </div>
             
             <div class="blueprint-container">
                 <!-- As Is 섹션 -->
-                <div class="blueprint-section as-is">
-                    <div class="section-header">
-                        <h2>📋 As Is (현재 수업)</h2>
-                        <p>지금 수업의 모습을 솔직하게 기록하세요</p>
+                <div class="blueprint-card as-is-card">
+                    <div class="card-header">
+                        <h2 class="card-title">📄 As Is (현재 수업)</h2>
+                        <p class="card-subtitle">지금 수업의 모습</p>
                     </div>
                     
                     <div class="form-group">
-                        <label for="as-is-goal">1. 학습 목표는 무엇이었나요?</label>
+                        <div class="question-header">
+                            <span class="question-number">①</span>
+                            <div class="question-content">
+                                <h3 class="question-title">학습 목표는 무엇이었나요?</h3>
+                                <p class="question-hint">지금 수업에서 학생들이 무엇을 배우도록 했나요?</p>
+                            </div>
+                        </div>
+                        <div class="hint-card">
+                            <span class="hint-icon">💡</span>
+                            <span class="hint-text">예시: AI 도구를 사용해 창의적 글쓰기 활동 진행</span>
+                        </div>
                         <textarea 
                             id="as-is-goal" 
-                            class="form-input" 
-                            rows="3"
-                            placeholder="예: AI 도구를 사용해 창의적 글쓰기를 배운다"
-                            oninput="blueprintModule.updateData('asIs', 'learningGoal', this.value)"
+                            class="form-input as-is-input" 
+                            rows="4"
+                            oninput="blueprintModule.updateData('asIs', 'learningGoal', this.value); blueprintModule.updateProgress();"
                         >${this.blueprintData.asIs.learningGoal}</textarea>
                     </div>
                     
                     <div class="form-group">
-                        <label for="as-is-method">2. 어떤 방법으로 수업했나요?</label>
+                        <div class="question-header">
+                            <span class="question-number">②</span>
+                            <div class="question-content">
+                                <h3 class="question-title">어떤 방법으로 수업했나요?</h3>
+                                <p class="question-hint">수업 진행 방식과 활동 내용을 기록하세요</p>
+                            </div>
+                        </div>
+                        <div class="hint-card">
+                            <span class="hint-icon">💡</span>
+                            <span class="hint-text">예시: 챗GPT를 사용해 글쓰기 활동 진행</span>
+                        </div>
                         <textarea 
                             id="as-is-method" 
-                            class="form-input" 
-                            rows="3"
-                            placeholder="예: 챗GPT를 사용해 글쓰기 활동 진행"
-                            oninput="blueprintModule.updateData('asIs', 'currentMethod', this.value)"
+                            class="form-input as-is-input" 
+                            rows="4"
+                            oninput="blueprintModule.updateData('asIs', 'currentMethod', this.value); blueprintModule.updateProgress();"
                         >${this.blueprintData.asIs.currentMethod}</textarea>
                     </div>
                     
                     <div class="form-group">
-                        <label for="as-is-problem">3. 어떤 문제가 있었나요?</label>
+                        <div class="question-header">
+                            <span class="question-number">③</span>
+                            <div class="question-content">
+                                <h3 class="question-title">어떤 문제가 있었나요?</h3>
+                                <p class="question-hint">수업 중 발생한 문제점이나 아쉬운 점을 솔직하게 기록하세요</p>
+                            </div>
+                        </div>
+                        <div class="hint-card">
+                            <span class="hint-icon">💡</span>
+                            <span class="hint-text">예시: 도구 설명에 시간이 너무 많이 걸렸다</span>
+                        </div>
                         <textarea 
                             id="as-is-problem" 
-                            class="form-input" 
-                            rows="3"
-                            placeholder="예: 도구 설명에 시간이 너무 많이 걸렸다"
-                            oninput="blueprintModule.updateData('asIs', 'problem', this.value)"
+                            class="form-input as-is-input" 
+                            rows="4"
+                            oninput="blueprintModule.updateData('asIs', 'problem', this.value); blueprintModule.updateProgress();"
                         >${this.blueprintData.asIs.problem}</textarea>
                     </div>
                     
                     <div class="form-group">
-                        <label for="as-is-reaction">4. 학생들의 반응은 어땠나요?</label>
+                        <div class="question-header">
+                            <span class="question-number">④</span>
+                            <div class="question-content">
+                                <h3 class="question-title">학생들의 반응은 어땠나요?</h3>
+                                <p class="question-hint">학생들의 참여도와 반응을 관찰한 내용을 기록하세요</p>
+                            </div>
+                        </div>
+                        <div class="hint-card">
+                            <span class="hint-icon">💡</span>
+                            <span class="hint-text">예시: 신기해했지만 학습 내용은 기억하지 못함</span>
+                        </div>
                         <textarea 
                             id="as-is-reaction" 
-                            class="form-input" 
-                            rows="3"
-                            placeholder="예: 신기해했지만 학습 내용은 기억하지 못함"
-                            oninput="blueprintModule.updateData('asIs', 'studentReaction', this.value)"
+                            class="form-input as-is-input" 
+                            rows="4"
+                            oninput="blueprintModule.updateData('asIs', 'studentReaction', this.value); blueprintModule.updateProgress();"
                         >${this.blueprintData.asIs.studentReaction}</textarea>
                     </div>
-                </div>
-                
-                <!-- 화살표 -->
-                <div class="arrow-divider">
-                    <div class="arrow">→</div>
-                    <p>개선</p>
+                    
+                    <!-- As Is 완료 구분선 -->
+                    <div class="section-divider">
+                        <div class="divider-line"></div>
+                        <div class="divider-text">✔ 현재 수업 분석 완료</div>
+                        <div class="divider-line"></div>
+                    </div>
                 </div>
                 
                 <!-- To Be 섹션 -->
-                <div class="blueprint-section to-be">
-                    <div class="section-header">
-                        <h2>🎯 To Be (개선된 수업)</h2>
-                        <p>이상적인 수업의 모습을 그려보세요</p>
+                <div class="blueprint-card to-be-card">
+                    <div class="card-header">
+                        <h2 class="card-title">🎯 To Be (개선된 수업)</h2>
+                        <p class="card-subtitle">이상적인 수업의 모습을 설계해보세요</p>
                     </div>
                     
                     <div class="form-group">
-                        <label for="to-be-goal">1. 학습 목표는 무엇인가요?</label>
+                        <div class="question-header">
+                            <span class="question-number">①</span>
+                            <div class="question-content">
+                                <h3 class="question-title">앞으로 수업의 학습 목표는?</h3>
+                                <p class="question-hint">학생들이 수업 후 무엇을 할 수 있기를 바라나요?</p>
+                            </div>
+                        </div>
+                        <div class="hint-card">
+                            <span class="hint-icon">💡</span>
+                            <span class="hint-text">예시: AI 도구를 활용해 창의적 글쓰기 능력을 기른다</span>
+                        </div>
                         <textarea 
                             id="to-be-goal" 
-                            class="form-input" 
-                            rows="3"
-                            placeholder="예: AI 도구를 활용해 창의적 글쓰기 능력을 기른다"
-                            oninput="blueprintModule.updateData('toBe', 'learningGoal', this.value)"
+                            class="form-input to-be-input" 
+                            rows="4"
+                            oninput="blueprintModule.updateData('toBe', 'learningGoal', this.value); blueprintModule.updateProgress();"
                         >${this.blueprintData.toBe.learningGoal}</textarea>
                     </div>
                     
                     <div class="form-group">
-                        <label for="to-be-method">2. 어떤 방법으로 수업할 건가요?</label>
+                        <div class="question-header">
+                            <span class="question-number">②</span>
+                            <div class="question-content">
+                                <h3 class="question-title">어떤 방법으로 수업할 건가요?</h3>
+                                <p class="question-hint">개선된 수업 진행 방식과 활동을 설계해보세요</p>
+                            </div>
+                        </div>
+                        <div class="hint-card">
+                            <span class="hint-icon">💡</span>
+                            <span class="hint-text">예시: 사전 영상으로 도구 사용법 안내 후, 수업에서는 바로 활동 시작</span>
+                        </div>
                         <textarea 
                             id="to-be-method" 
-                            class="form-input" 
-                            rows="3"
-                            placeholder="예: 사전 영상으로 도구 사용법 안내 후, 수업에서는 바로 활동 시작"
-                            oninput="blueprintModule.updateData('toBe', 'newMethod', this.value)"
+                            class="form-input to-be-input" 
+                            rows="4"
+                            oninput="blueprintModule.updateData('toBe', 'newMethod', this.value); blueprintModule.updateProgress();"
                         >${this.blueprintData.toBe.newMethod}</textarea>
                     </div>
                     
                     <div class="form-group">
-                        <label for="to-be-effect">3. 기대 효과는 무엇인가요?</label>
+                        <div class="question-header">
+                            <span class="question-number">③</span>
+                            <div class="question-content">
+                                <h3 class="question-title">기대 효과는 무엇인가요?</h3>
+                                <p class="question-hint">이 수업을 통해 얻고자 하는 결과를 구체적으로 적어보세요</p>
+                            </div>
+                        </div>
+                        <div class="hint-card">
+                            <span class="hint-icon">💡</span>
+                            <span class="hint-text">예시: 활동 시간이 늘어 학습 효과가 증대될 것</span>
+                        </div>
                         <textarea 
                             id="to-be-effect" 
-                            class="form-input" 
-                            rows="3"
-                            placeholder="예: 활동 시간이 늘어 학습 효과가 증대될 것"
-                            oninput="blueprintModule.updateData('toBe', 'expectedEffect', this.value)"
+                            class="form-input to-be-input" 
+                            rows="4"
+                            oninput="blueprintModule.updateData('toBe', 'expectedEffect', this.value); blueprintModule.updateProgress();"
                         >${this.blueprintData.toBe.expectedEffect}</textarea>
                     </div>
                     
                     <div class="form-group">
-                        <label for="to-be-plan">4. 구체적인 실행 계획은?</label>
+                        <div class="question-header">
+                            <span class="question-number">④</span>
+                            <div class="question-content">
+                                <h3 class="question-title">구체적인 실행 계획은?</h3>
+                                <p class="question-hint">실제로 수업에 적용할 수 있는 단계별 계획을 세워보세요</p>
+                            </div>
+                        </div>
+                        <div class="hint-card">
+                            <span class="hint-icon">💡</span>
+                            <span class="hint-text">예시: 1) 사전 영상 제작 2) 핵심 기능만 3분 안내 3) 즉시 활동 시작</span>
+                        </div>
                         <textarea 
                             id="to-be-plan" 
-                            class="form-input" 
-                            rows="3"
-                            placeholder="예: 1) 사전 영상 제작 2) 핵심 기능만 3분 안내 3) 즉시 활동 시작"
-                            oninput="blueprintModule.updateData('toBe', 'actionPlan', this.value)"
+                            class="form-input to-be-input" 
+                            rows="4"
+                            oninput="blueprintModule.updateData('toBe', 'actionPlan', this.value); blueprintModule.updateProgress();"
                         >${this.blueprintData.toBe.actionPlan}</textarea>
                     </div>
                 </div>
@@ -229,6 +332,7 @@ export const blueprintModule = {
             };
             localStorage.removeItem('blueprintData');
             this.render();
+            this.updateProgress();
             alert('청사진이 초기화되었습니다.');
         }
     }
