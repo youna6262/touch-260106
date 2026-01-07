@@ -96,7 +96,7 @@ export const blueprintModule = {
                         </div>
                         <div class="hint-card">
                             <span class="hint-icon">💡</span>
-                            <span class="hint-text">예시: 챗GPT를 사용해 글쓰기 활동 진행</span>
+                            <span class="hint-text">예시: 아트봉봉을 사용해 글쓰기 활동 진행</span>
                         </div>
                         <textarea 
                             id="as-is-method" 
