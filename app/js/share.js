@@ -57,66 +57,97 @@ export const shareModule = {
             state.blueprintData.toBe?.learningGoal
         ));
         
-        // 현재 상태 텍스트
-        const currentStatus = status.completedCount === status.total 
-            ? '✅ 모든 단계가 완료되었습니다!' 
-            : '⚠️ 일부 단계가 완료되지 않았습니다';
+        // 상태 배지 생성 함수
+        const getStatusBadge = (isCompleted) => {
+            if (isCompleted) {
+                return '<span class="status-badge completed">🟢 완료</span>';
+            } else {
+                return '<span class="status-badge incomplete">🔴 미완료</span>';
+            }
+        };
         
         let content = '';
         
-        // ========== ① 나의 수업 분석 요약 카드 ==========
+        // ========== ① 상단: 전체 상태 요약 카드 ==========
         content += `
             <div class="summary-card">
-                <h2 class="summary-title">📊 나의 수업 분석 결과</h2>
+                <h2 class="summary-title">📊 수업 분석 전체 상태</h2>
                 <div class="summary-content">
                     <div class="summary-item">
-                        <span class="summary-label">PICRAT 진단 결과:</span>
-                        <span class="summary-value">${picratCode || '미완료'}</span>
+                        <span class="summary-label">PICRAT 진단:</span>
+                        ${getStatusBadge(status.completed.picrat)}
+                        ${status.completed.picrat ? `<span class="summary-value">${picratCode}</span>` : ''}
                     </div>
                     <div class="summary-item">
-                        <span class="summary-label">As Is → To Be 청사진:</span>
-                        <span class="summary-value">${blueprintCompleted ? '완료' : '미완료'}</span>
-                    </div>
-                    <div class="summary-status">
-                        <span class="status-text">${currentStatus}</span>
+                        <span class="summary-label">As-Is → To-Be:</span>
+                        ${getStatusBadge(blueprintCompleted)}
                     </div>
                 </div>
             </div>
         `;
         
-        // ========== ② 단계별 완료 현황 (체크리스트) ==========
+        // ========== ② 하단: Step 기반 진행 UI ==========
+        const steps = [
+            {
+                id: 'survey',
+                number: 1,
+                icon: '🌱',
+                title: '망한 수업 자랑하기',
+                completed: status.completed.survey,
+                page: 'survey',
+                buttonText: '✍ 지금 작성하기'
+            },
+            {
+                id: 'picrat',
+                number: 2,
+                icon: '📋',
+                title: 'PICRAT 진단',
+                completed: status.completed.picrat,
+                page: 'picrat',
+                buttonText: '🔍 진단 시작하기'
+            },
+            {
+                id: 'blueprint',
+                number: 3,
+                icon: '🧭',
+                title: 'As-Is → To-Be 작성',
+                completed: status.completed.blueprint,
+                page: 'blueprint',
+                buttonText: '✍ 지금 작성하기'
+            }
+        ];
+        
+        // 첫 번째 미완료 항목 찾기 (우선순위)
+        const firstIncompleteIndex = steps.findIndex(step => !step.completed);
+        
         content += `
-            <div class="checklist-section">
-                <h3 class="checklist-title">📋 결과 공유 전 확인 사항</h3>
-                <div class="checklist-items">
+            <div class="steps-section">
+                <h3 class="steps-title">📋 결과 공유 전 확인 사항</h3>
+                <div class="steps-container">
         `;
         
-        // 설문 체크리스트
-        content += `
-            <div class="checklist-item ${status.completed.survey ? 'completed' : ''}">
-                <span class="check-icon">${status.completed.survey ? '☑' : '☐'}</span>
-                <span class="check-label">망한 수업 자랑하기 ${status.completed.survey ? '완료' : '미완료'}</span>
-                ${!status.completed.survey ? `<button class="action-btn secondary" onclick="switchPage('survey')">작성하러 가기</button>` : ''}
-            </div>
-        `;
-        
-        // PICRAT 체크리스트
-        content += `
-            <div class="checklist-item ${status.completed.picrat ? 'completed' : ''}">
-                <span class="check-icon">${status.completed.picrat ? '☑' : '☐'}</span>
-                <span class="check-label">PICRAT 진단 ${status.completed.picrat ? '완료' : '미완료'}</span>
-                ${!status.completed.picrat ? `<button class="action-btn secondary" onclick="switchPage('picrat')">진단하러 가기</button>` : ''}
-            </div>
-        `;
-        
-        // 청사진 체크리스트
-        content += `
-            <div class="checklist-item ${status.completed.blueprint ? 'completed' : ''}">
-                <span class="check-icon">${status.completed.blueprint ? '☑' : '☐'}</span>
-                <span class="check-label">As Is → To Be 청사진 ${status.completed.blueprint ? '완료' : '미완료'}</span>
-                ${!status.completed.blueprint ? `<button class="action-btn secondary" onclick="switchPage('blueprint')">작성하러 가기</button>` : ''}
-            </div>
-        `;
+        steps.forEach((step, index) => {
+            const isFirstIncomplete = index === firstIncompleteIndex;
+            const stepClass = step.completed ? 'step-item completed' : 'step-item incomplete';
+            const statusBadge = step.completed ? '🟢 완료' : '🔴 미완료';
+            const buttonClass = isFirstIncomplete ? 'action-btn primary' : 'action-btn secondary';
+            
+            content += `
+                <div class="${stepClass}">
+                    <div class="step-header">
+                        <span class="step-number">[${step.number}]</span>
+                        <span class="step-icon">${step.icon}</span>
+                        <span class="step-title">${step.title}</span>
+                        <span class="step-status-badge">${statusBadge}</span>
+                    </div>
+                    ${!step.completed ? `
+                        <button class="${buttonClass}" onclick="switchPage('${step.page}')">
+                            ${step.buttonText}
+                        </button>
+                    ` : ''}
+                </div>
+            `;
+        });
         
         content += `
                 </div>

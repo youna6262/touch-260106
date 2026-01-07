@@ -1,0 +1,290 @@
+/* ============================================
+   결과 공유 페이지 스타일
+   ============================================ */
+
+/* 상단: 전체 상태 요약 카드 */
+.summary-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.summary-title {
+    font-size: 1.4rem;
+    color: #1f2937;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.summary-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.summary-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.summary-label {
+    font-size: 1rem;
+    color: #374151;
+    font-weight: 500;
+}
+
+.summary-value {
+    font-size: 1rem;
+    color: #667eea;
+    font-weight: 600;
+    background: #ede9fe;
+    padding: 4px 12px;
+    border-radius: 12px;
+}
+
+/* 상태 배지 */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.status-badge.completed {
+    background: #ecfdf5;
+    color: #065f46;
+}
+
+.status-badge.incomplete {
+    background: #fef2f2;
+    color: #991b1b;
+}
+
+/* 하단: Step 기반 진행 UI */
+.steps-section {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    margin-bottom: 24px;
+}
+
+.steps-title {
+    font-size: 1.2rem;
+    color: #1f2937;
+    margin-bottom: 24px;
+    font-weight: 700;
+}
+
+.steps-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.step-item {
+    background: #f8fafc;
+    border: 2px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.step-item.completed {
+    background: #f0fdf4;
+    border-color: #10b981;
+    opacity: 0.8;
+}
+
+.step-item.incomplete {
+    background: #fff7ed;
+    border-color: #f59e0b;
+}
+
+.step-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.step-number {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #667eea;
+    background: #ede9fe;
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+.step-icon {
+    font-size: 1.4rem;
+}
+
+.step-title {
+    flex: 1;
+    font-size: 1.1rem;
+    color: #1f2937;
+    font-weight: 600;
+}
+
+.step-status-badge {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* 버튼 스타일 */
+.action-btn {
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.action-btn.primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.action-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.action-btn.secondary {
+    background: white;
+    color: #374151;
+    border: 2px solid #e5e7eb;
+}
+
+.action-btn.secondary:hover {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+    transform: translateY(-1px);
+}
+
+.action-btn.large {
+    padding: 16px 32px;
+    font-size: 1.1rem;
+}
+
+/* PICRAT 결과 카드 */
+.picrat-result-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.picrat-card-title {
+    font-size: 1.3rem;
+    color: #1f2937;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.picrat-code-large {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #667eea;
+    text-align: center;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.picrat-expansion {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.picrat-letter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.letter-code {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.letter-meaning {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.picrat-description {
+    color: #374151;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* 공유 액션 영역 */
+.share-action-section {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.share-action-title {
+    font-size: 1.3rem;
+    color: #1f2937;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.share-action-desc {
+    color: #6b7280;
+    margin-bottom: 24px;
+    font-size: 1rem;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .summary-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .step-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .step-title {
+        width: 100%;
+    }
+    
+    .action-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
