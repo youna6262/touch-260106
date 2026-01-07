@@ -15,17 +15,11 @@ git status
 
 # 파일 추가
 Write-Host "`n=== 파일 추가 ===" -ForegroundColor Cyan
-git add netlify.toml
-git add .gitignore
-git add NETLIFY_DEPLOY.md
+git add -A
 
 # 커밋
 Write-Host "`n=== 커밋 ===" -ForegroundColor Cyan
-git commit -m "Add Netlify deployment configuration
-
-- Add netlify.toml for build and deployment settings
-- Add .gitignore for project root
-- Add NETLIFY_DEPLOY.md deployment guide"
+git commit -m "결과 공유 페이지 UX 개선: 카드형 레이아웃, 상태 시각화, Step UI, 버튼 스타일"
 
 # 원격 저장소 확인 및 푸시
 Write-Host "`n=== 원격 저장소 확인 ===" -ForegroundColor Cyan
@@ -42,7 +36,3 @@ if ($remote) {
 }
 
 Write-Host "`n완료!" -ForegroundColor Green
-
-
-
-

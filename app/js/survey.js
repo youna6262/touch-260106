@@ -32,7 +32,7 @@ export const surveyModule = {
             id: 3,
             text: '수업이 끝나고 학생들에게 "오늘 뭐 배웠어?"라고 물었을 때 반응은?',
             options: [
-                { text: '"음... 뤼튼이요?" / "챗GPT요?" (도구 이름만 기억)', value: 'tool' },
+                { text: '"음... 자작자작이요?" / "아트봉봉이요?" (도구 이름만 기억)', value: 'tool' },
                 { text: '"뭐 했더라...?" (기억 못함)', value: 'confused' },
                 { text: '학습 내용을 어느 정도 말할 수 있었다', value: 'content' },
                 { text: '도구가 재밌었다는 반응이 대부분이었다', value: 'excited' }
@@ -178,7 +178,7 @@ export const surveyModule = {
         'what': {
             icon: '🤔',
             title: '그래서뭐했지상',
-            subtitle: '"오늘 뭐 배웠어?" "음... 뤼튼이요?"',
+            subtitle: '"오늘 뭐 배웠어?" "음... 자작자작이요?"',
             desc: `<h3>📋 당신의 수업 패턴</h3>
             <p>수업은 분명히 했는데, 학생들 머릿속에 남은 건 도구 이름뿐! 학습 목표가 도구 사용에 묻혀버렸습니다.</p>
             <ul>
